@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas>
+	<SubTexture name="right-arrow-icon0000" x="4" y="0" width="60" height="66"/>
+	<SubTexture name="down-arrow-icon0000" x="59" y="0" width="60" height="66"/>
+	<SubTexture name="file-icon0000" x="120" y="0" width="72" height="79"/>
+	<SubTexture name="folder-icon0000" x="191" y="0" width="80" height="67"/>
+</TextureAtlas>
