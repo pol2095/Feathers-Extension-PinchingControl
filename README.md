@@ -6,7 +6,7 @@ The pinching control that allows a pinch to zoom mechanic using the multitouch i
 ## Quick Links
 
 * [Website](http://pol2095.free.fr/Feathers-Extension-PinchingControl/)
-* [API Reference](http://pol2095.free.fr/Starling-Feathers-Extensions/docs/feathers/extensions/zoomable/package-detail.html)
+* [API Reference](http://pol2095.free.fr/Starling-Feathers-Extensions/docs/feathers/extensions/zoomable/PinchingControl.html)
 * [Discussion Forum](http://forum.starling-framework.org/forum/feathers)
 * [Github Project](https://github.com/pol2095/Feathers-Extension-PinchingControl)
 
