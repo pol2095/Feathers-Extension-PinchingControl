@@ -20,6 +20,7 @@ package feathers.extensions.utils
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.ScrollContainer;
 
+	import feathers.extensions.zoomable.PinchingControl;
 	import feathers.extensions.utils.events.TouchSheetEvent;
 	
     public class TouchSheet extends LayoutGroup
@@ -29,9 +30,9 @@ package feathers.extensions.utils
 		public var contents:LayoutGroup = new LayoutGroup();
 		public var scrollerPt:Point = new Point(0, 0);
 		public var contentsPt:Point = new Point(0, 0);
-		private var pinchingControl:DisplayObjectContainer;
+		private var pinchingControl:PinchingControl;
 		
-		public function TouchSheet(pinchingControl:DisplayObjectContainer)
+		public function TouchSheet(pinchingControl:PinchingControl)
         {
             this.pinchingControl = pinchingControl;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
@@ -100,14 +101,13 @@ package feathers.extensions.utils
                 var currentLocalB:Point  = touchB.getLocation(contents);
 				contentsPt = new Point( (currentLocalA.x + currentLocalB.x) * 0.5 * scaleX, (currentLocalA.y + currentLocalB.y) * 0.5 * scaleY );
 				
-				if(scaleX < (pinchingControl as Object).minScale)
+				if(scaleX < pinchingControl.minScale)
 				{
 					pivotX = _pivotX;
 					pivotY = _pivotY;
 					x = _x;
 					y = _y;
-					scaleX = scaleY = _scaleX;
-					return;
+					scaleX = scaleY = pinchingControl.minScale;
 				}
 				dispatchEvent( new TouchSheetEvent( TouchSheetEvent.PINCHING ) );
             }
@@ -125,7 +125,7 @@ package feathers.extensions.utils
         
         public override function dispose():void
         {
-            stage.removeEventListener(TouchEvent.TOUCH, onTouch);
+            if(stage) stage.removeEventListener(TouchEvent.TOUCH, onTouch);
             super.dispose();
         }
     }

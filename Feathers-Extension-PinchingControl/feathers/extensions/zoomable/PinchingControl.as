@@ -26,7 +26,7 @@ package feathers.extensions.zoomable
 	import flash.geom.Rectangle;
 	
     /**
-	 * A control that allows you to pinch to zoom.
+	 * Pinching control that allows a pinch to zoom mechanic using the multitouch inputs of a mobile device.
 	 */
 	public class PinchingControl extends ScrollContainer
     {
