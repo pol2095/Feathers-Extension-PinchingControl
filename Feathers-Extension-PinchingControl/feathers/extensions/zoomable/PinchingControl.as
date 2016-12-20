@@ -394,5 +394,16 @@ package feathers.extensions.zoomable
 			super.draw();
 			if( this.isInvalid(INVALIDATION_FLAG_SIZE) ) this._autoSizeIfNeeded();
 		}
+		
+		/**
+		 * @private
+		 */
+		override public function dispose():void
+		{
+			this.removeEventListener(Event.SCROLL, onScroll);
+			sheet.removeEventListener(TouchSheetEvent.PINCHING, onPinching);
+			if(stage) stage.removeEventListener(Event.RESIZE, onResize);
+			super.dispose();
+		}
 	}
 }
