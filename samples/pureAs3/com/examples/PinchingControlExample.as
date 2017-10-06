@@ -60,6 +60,8 @@ package com.examples
 		
 		private function creationCompleteHandler( event:Event ):void
 		{
+			this.removeEventListener( FeathersEventType.CREATION_COMPLETE, creationCompleteHandler );
+			
 			onResize(event);
 			stage.addEventListener(Event.RESIZE, onResize);
 			image.source = folderTexture;
