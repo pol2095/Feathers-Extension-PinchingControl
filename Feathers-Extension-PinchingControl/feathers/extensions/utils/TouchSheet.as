@@ -109,6 +109,18 @@ package feathers.extensions.utils
 					y = _y;
 					scaleX = scaleY = pinchingControl.minScale;
 				}
+				else if( ! isNaN( pinchingControl.maxScale ) )
+				{
+					if( scaleX > pinchingControl.maxScale )
+					{
+						pivotX = _pivotX;
+						pivotY = _pivotY;
+						x = _x;
+						y = _y;
+						scaleX = scaleY = pinchingControl.maxScale;
+					}
+				}
+				
 				dispatchEvent( new TouchSheetEvent( TouchSheetEvent.PINCHING ) );
             }
 			

@@ -55,6 +55,21 @@ package feathers.extensions.zoomable
 			this._minScale = value;
 		}
 		
+		private var _maxScale:Number = NaN;
+		/**
+		 * The maximum scale.
+		 *
+		 * @default NaN
+		 */
+		public function get maxScale():Number
+		{
+			return this._maxScale;
+		}
+		public function set maxScale(value:Number):void
+		{
+			this._maxScale = value;
+		}
+		
 		/**
 		 * A ScrollContainer that stops scrolling when this control scroll or is pinched.
 		 */
