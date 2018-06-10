@@ -14,7 +14,7 @@ package feathers.extensions.zoomable
 	import feathers.layout.ILayoutDisplayObject;
 	import feathers.layout.ILayout;
 	
-    import feathers.extensions.utils.TouchSheet;
+	import feathers.extensions.utils.TouchSheet;
 	import feathers.extensions.utils.events.TouchSheetEvent;
 	
 	import starling.display.DisplayObject;
@@ -25,11 +25,11 @@ package feathers.extensions.zoomable
 	
 	import flash.geom.Rectangle;
 	
-    /**
+	/**
 	 * Pinching control that allows a pinch to zoom mechanic using the multitouch inputs of a mobile device.
 	 */
 	public class PinchingControl extends ScrollContainer
-    {
+	{
 		private var sheet:TouchSheet;
 		private var layoutGroup:LayoutGroup;
 		private var pinchingContentsEnabled:Boolean;
@@ -77,7 +77,7 @@ package feathers.extensions.zoomable
 		private var isFirstTouched:Boolean;
 		
 		public function PinchingControl()
-        {
+		{
 			this.addEventListener(Event.SCROLL, onScroll);
 			
 			sheet = new TouchSheet(this);
@@ -85,29 +85,30 @@ package feathers.extensions.zoomable
 			layoutGroup = new LayoutGroup();
 			layoutGroup.includeInLayout = false;
 			layoutGroup.addChild(sheet);
-            this.addChild(layoutGroup);
+			this.addChild(layoutGroup);
 			this.pinchingContentsEnabled = true;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-        }
+		}
 		
 		private function onAddedToStage(event:Event):void
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			stage.addEventListener(Event.RESIZE, onResize);
-        }
+		}
+		
 		/**
 		 * @private
 		 */
 		public function onResize(event:Event = null):void
-        {
+		{
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 				
 		private function adjust():void
-        {			
-			layoutGroup.x = sheet.width > this.width || !isCentered ? -sheet.x : -sheet.x + (this.width - sheet.width) / 2;
+		{			
+			layoutGroup.x = sheet.width > this.width || ! isCentered ? -sheet.x : -sheet.x + (this.width - sheet.width) / 2;
 			layoutGroup.pivotX = -sheet.pivotX * sheet.scaleX;
-			layoutGroup.y = sheet.height > this.height || !isCentered ? -sheet.y : -sheet.y + (this.height - sheet.height) / 2;
+			layoutGroup.y = sheet.height > this.height || ! isCentered ? -sheet.y : -sheet.y + (this.height - sheet.height) / 2;
 			layoutGroup.pivotY = -sheet.pivotY * sheet.scaleY;
 			
 			viewPortResize();
@@ -117,7 +118,7 @@ package feathers.extensions.zoomable
 		}
 		
 		private function onPinching(event:TouchSheetEvent = null):void
-        {
+		{
 			if(scroller) scroller.stopScrolling();
 			this.stopScrolling();
 			
@@ -147,7 +148,7 @@ package feathers.extensions.zoomable
 		}
 		
 		private function onScroll(event:Event):void
-        {
+		{
 			if(scroller) scroller.stopScrolling();
 			if(!this.isScrolling) return;
 			isFirstTouched = true;
@@ -157,9 +158,9 @@ package feathers.extensions.zoomable
 		 * @private
 		 */
 		public function _autoSizeIfNeeded():void
-        {
+		{
 			adjust();
-			if(!isFirstTouched)
+			if( ! isFirstTouched )
 			{
 				if(sheet.width > this.width)
 				{
@@ -378,7 +379,7 @@ package feathers.extensions.zoomable
 		 * Reposition and rescale this layout.
 		 */
 		public function reset():void
-        {
+		{
 			sheet.scaleX = sheet.scaleY = 1;
 			layoutGroup.x = layoutGroup.y = layoutGroup.pivotX = layoutGroup.pivotY = sheet.x = sheet.y = sheet.pivotX = sheet.pivotY = 0;
 			viewPortResize();
@@ -389,13 +390,13 @@ package feathers.extensions.zoomable
 		 * Reposition this layout.
 		 */
 		public function reposition():void
-        {
+		{
 			isFirstTouched = false;
 			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 		
 		private function viewPortResize():void
-        {
+		{
 			layoutGroup.validate();
 			this.viewPort.setSize(sheet.width, sheet.height);
 			this.validate();

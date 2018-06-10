@@ -6,35 +6,38 @@ accordance with the terms of the accompanying license agreement.
 */
 package feathers.extensions.utils
 {
-    import flash.geom.Point;
-
-    import starling.display.DisplayObject;
+	import flash.geom.Point;
+	
+	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
-    import starling.display.Sprite;
+	import starling.display.Sprite;
+	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
-    import starling.events.Touch;
-    import starling.events.TouchEvent;
-    import starling.events.TouchPhase;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	
 	import feathers.core.FeathersControl;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.ScrollContainer;
-
+	
 	import feathers.extensions.zoomable.PinchingControl;
 	import feathers.extensions.utils.events.TouchSheetEvent;
 	
-    public class TouchSheet extends LayoutGroup
-    {
+	public class TouchSheet extends LayoutGroup
+	{
 		private var getPreviousLocationA:Point;
 		private var getPreviousLocationB:Point;
 		public var contents:LayoutGroup = new LayoutGroup();
 		public var scrollerPt:Point = new Point(0, 0);
 		public var contentsPt:Point = new Point(0, 0);
 		private var pinchingControl:PinchingControl;
+		private var horizontalScrollPosition:Number;
+		private var verticalScrollPosition:Number;
 		
 		public function TouchSheet(pinchingControl:PinchingControl)
-        {
-            this.pinchingControl = pinchingControl;
+		{
+			this.pinchingControl = pinchingControl;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			this.addChild(contents);
 		}
@@ -42,30 +45,32 @@ package feathers.extensions.utils
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
-        }
-        
-        private function onTouch(event:TouchEvent):void
-        {
+			horizontalScrollPosition = pinchingControl.horizontalScrollPosition;
+			verticalScrollPosition = pinchingControl.verticalScrollPosition;
+		}
+		
+		private function onTouch(event:TouchEvent):void
+		{
 			var touchStationary:Vector.<Touch> = event.getTouches(stage, TouchPhase.STATIONARY);
 			var touchMoved:Vector.<Touch> = event.getTouches(stage, TouchPhase.MOVED);
 			var touches:Vector.<Touch> = touchStationary.concat(touchMoved);
 			if (touches.length != 0) if( !touches[0].isTouching(pinchingControl) ) return;
-            
-            if (touches.length == 2)
-            {
+			
+			if (touches.length == 2)
+			{
 				var _x:Number = x;
 				var _y:Number = y;
 				var _pivotX:Number = pivotX;
 				var _pivotY:Number = pivotY;
 				var _scaleX:Number = scaleX;
 				// two fingers touching -> scale
-                var touchA:Touch = touches[0];
-                var touchB:Touch = touches[1];
-                
-                var currentPosA:Point  = touchA.getLocation(parent);
-                var previousPosA:Point = touchA.getPreviousLocation(parent);
-                var currentPosB:Point  = touchB.getLocation(parent);
-                var previousPosB:Point = touchB.getPreviousLocation(parent);
+				var touchA:Touch = touches[0];
+				var touchB:Touch = touches[1];
+				
+				var currentPosA:Point  = touchA.getLocation(parent);
+				var previousPosA:Point = touchA.getPreviousLocation(parent);
+				var currentPosB:Point  = touchB.getLocation(parent);
+				var previousPosB:Point = touchB.getPreviousLocation(parent);
 				
 				if(getPreviousLocationA && getPreviousLocationB)
 				{
@@ -73,13 +78,13 @@ package feathers.extensions.utils
 				}
 				getPreviousLocationA = previousPosA;
 				getPreviousLocationB = previousPosB;
-                
-                var currentVector:Point  = currentPosA.subtract(currentPosB);
-                var previousVector:Point = previousPosA.subtract(previousPosB);
-                
-                // update pivot point based on previous center
-                var previousLocalA:Point  = touchA.getPreviousLocation(this);
-                var previousLocalB:Point  = touchB.getPreviousLocation(this);
+				
+				var currentVector:Point  = currentPosA.subtract(currentPosB);
+				var previousVector:Point = previousPosA.subtract(previousPosB);
+				
+				// update pivot point based on previous center
+				var previousLocalA:Point  = touchA.getPreviousLocation(this);
+				var previousLocalB:Point  = touchB.getPreviousLocation(this);
 				
 				var sizeDiff:Number = currentVector.length / previousVector.length;
 				
@@ -91,25 +96,25 @@ package feathers.extensions.utils
 					}
 				}
 								
-                pivotX = (previousLocalA.x + previousLocalB.x) * 0.5;
-                pivotY = (previousLocalA.y + previousLocalB.y) * 0.5;
+				pivotX = (previousLocalA.x + previousLocalB.x) * 0.5;
+				pivotY = (previousLocalA.y + previousLocalB.y) * 0.5;
 				
-                // update location based on the current center
-                x = (currentPosA.x + currentPosB.x) * 0.5;
-                y = (currentPosA.y + currentPosB.y) * 0.5;
-
-                // scale
+				// update location based on the current center
+				x = (currentPosA.x + currentPosB.x) * 0.5;
+				y = (currentPosA.y + currentPosB.y) * 0.5;
+				
+				// scale
 				var lastScaleX:Number = scaleX;
-                //var sizeDiff:Number = currentVector.length / previousVector.length;
-                scaleX *= sizeDiff;
-                scaleY *= sizeDiff;
+				//var sizeDiff:Number = currentVector.length / previousVector.length;
+				scaleX *= sizeDiff;
+				scaleY *= sizeDiff;
 				
 				currentPosA  = touchA.getLocation(pinchingControl);
-                currentPosB  = touchB.getLocation(pinchingControl);
+				currentPosB  = touchB.getLocation(pinchingControl);
 				scrollerPt = new Point( (currentPosA.x + currentPosB.x) * 0.5, (currentPosA.y + currentPosB.y) * 0.5 );
 				
 				var currentLocalA:Point  = touchA.getLocation(contents);
-                var currentLocalB:Point  = touchB.getLocation(contents);
+				var currentLocalB:Point  = touchB.getLocation(contents);
 				contentsPt = new Point( (currentLocalA.x + currentLocalB.x) * 0.5 * scaleX, (currentLocalA.y + currentLocalB.y) * 0.5 * scaleY );
 				
 				if(scaleX < pinchingControl.minScale)
@@ -128,29 +133,53 @@ package feathers.extensions.utils
 						pivotY = _pivotY;
 						x = _x;
 						y = _y;
-						//pinchingControl.scroller.stopScrolling();
 						scaleX = scaleY = pinchingControl.maxScale;
 					}
 				}
 				
 				dispatchEvent( new TouchSheetEvent( TouchSheetEvent.PINCHING ) );
-            }
+			}
 			
 			var touch:Touch = event.getTouch(pinchingControl, TouchPhase.ENDED);
-            if (touch && touch.tapCount == 2)
+			if (touch && touch.tapCount == 2)
 			{
 				scrollerPt = touch.getLocation(pinchingControl);
 				var currentLocal:Point = touch.getLocation(contents);
-				this.scaleX = this.scaleY = 1;
+				if( isNaN( pinchingControl.maxScale ) )
+				{
+					this.scaleX = this.scaleY = 1;
+					this.addEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
+				}
+				else if( this.scaleX != pinchingControl.maxScale)
+				{
+					this.scaleX = this.scaleY = pinchingControl.maxScale;
+				}
+				else
+				{
+					this.scaleX = this.scaleY = 1;
+					this.addEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
+				}
 				contentsPt = new Point( currentLocal.x * scaleX, currentLocal.y * scaleY );
 				dispatchEvent( new TouchSheetEvent( TouchSheetEvent.PINCHING ) );
 			}
-        }
-        
-        public override function dispose():void
-        {
-            if(stage) stage.removeEventListener(TouchEvent.TOUCH, onTouch);
-            super.dispose();
-        }
-    }
+		}
+		
+		private function onScroll(event:EnterFrameEvent):void
+		{
+			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
+			if( pinchingControl.isScrolling )
+			{
+				pinchingControl.stopScrolling();
+				var horizontalScrollPosition:Number = ! pinchingControl.isCentered ? 0 : pinchingControl.maxHorizontalScrollPosition / 2;
+				var verticalScrollPosition:Number = ! pinchingControl.isCentered ? 0 : pinchingControl.maxVerticalScrollPosition / 2;
+				pinchingControl.scrollToPosition( horizontalScrollPosition, verticalScrollPosition, 0 );
+			}
+		}
+		
+		public override function dispose():void
+		{
+			if(stage) stage.removeEventListener(TouchEvent.TOUCH, onTouch);
+			super.dispose();
+		}
+	}
 }

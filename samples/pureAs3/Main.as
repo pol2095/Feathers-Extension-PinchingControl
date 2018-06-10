@@ -15,9 +15,9 @@ package
 	import flash.system.Capabilities;
 	import flash.utils.ByteArray;
 	import com.examples.PinchingControlExample;
-
+	
 	import starling.core.Starling;
-
+	
 	//[SWF(width="550",height="400",frameRate="60",backgroundColor="#4a4137")]
 	public class Main extends Sprite
 	{
@@ -30,11 +30,11 @@ package
 			//this.loaderInfo.addEventListener(Event.COMPLETE, loaderInfo_completeHandler);
 			addEventListener(Event.ADDED_TO_STAGE, loaderInfo_completeHandler);
 		}
-
+		
 		public var _starling:Starling;
 		private var _launchImage:Loader;
 		private var _savedAutoOrients:Boolean;
-
+		
 		private function showLaunchImage():void
 		{
 			var filePath:String;
@@ -83,7 +83,7 @@ package
 					filePath = "Default.png";
 				}
 			}
-
+			
 			if(filePath)
 			{
 				var file:File = File.applicationDirectory.resolvePath(filePath);
@@ -106,7 +106,7 @@ package
 				}
 			}
 		}
-
+		
 		private function loaderInfo_completeHandler(event:Event):void
 		{
 			this.stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -122,7 +122,7 @@ package
 			}
 			this.stage.addEventListener(Event.RESIZE, stage_resizeHandler, false, int.MAX_VALUE, true);
 		}
-
+		
 		private function starling_rootCreatedHandler(event:Object):void
 		{
 			if(this._launchImage)
@@ -133,7 +133,7 @@ package
 				this.stage.autoOrients = this._savedAutoOrients;
 			}
 		}
-
+		
 		private function stage_resizeHandler(event:Event):void
 		{
 			this._starling.stage.stageWidth = this.stage.stageWidth;
@@ -148,18 +148,17 @@ package
 			}
 			catch(error:Error) {}
 		}
-
+		
 		private function stage_deactivateHandler(event:Event):void
 		{
 			//this._starling.stop(true);
 			this.stage.addEventListener(Event.ACTIVATE, stage_activateHandler, false, 0, true);
 		}
-
+		
 		private function stage_activateHandler(event:Event):void
 		{
 			this.stage.removeEventListener(Event.ACTIVATE, stage_activateHandler);
 			//this._starling.start();
 		}
-
 	}
 }
