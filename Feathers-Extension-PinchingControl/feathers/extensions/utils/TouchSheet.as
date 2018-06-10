@@ -80,6 +80,16 @@ package feathers.extensions.utils
                 // update pivot point based on previous center
                 var previousLocalA:Point  = touchA.getPreviousLocation(this);
                 var previousLocalB:Point  = touchB.getPreviousLocation(this);
+				
+				var sizeDiff:Number = currentVector.length / previousVector.length;
+				
+				if( ! isNaN( pinchingControl.maxScale ) )
+				{
+					if( scaleX == pinchingControl.maxScale )
+					{
+						if( sizeDiff > 1 ) return;
+					}
+				}
 								
                 pivotX = (previousLocalA.x + previousLocalB.x) * 0.5;
                 pivotY = (previousLocalA.y + previousLocalB.y) * 0.5;
@@ -89,7 +99,8 @@ package feathers.extensions.utils
                 y = (currentPosA.y + currentPosB.y) * 0.5;
 
                 // scale
-                var sizeDiff:Number = currentVector.length / previousVector.length;
+				var lastScaleX:Number = scaleX;
+                //var sizeDiff:Number = currentVector.length / previousVector.length;
                 scaleX *= sizeDiff;
                 scaleY *= sizeDiff;
 				
@@ -117,6 +128,7 @@ package feathers.extensions.utils
 						pivotY = _pivotY;
 						x = _x;
 						y = _y;
+						//pinchingControl.scroller.stopScrolling();
 						scaleX = scaleY = pinchingControl.maxScale;
 					}
 				}
