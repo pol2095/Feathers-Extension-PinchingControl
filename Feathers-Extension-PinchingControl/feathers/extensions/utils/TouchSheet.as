@@ -11,7 +11,7 @@ package feathers.extensions.utils
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Sprite;
-	import starling.events.EnterFrameEvent;
+	//import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -32,8 +32,6 @@ package feathers.extensions.utils
 		public var scrollerPt:Point = new Point(0, 0);
 		public var contentsPt:Point = new Point(0, 0);
 		private var pinchingControl:PinchingControl;
-		private var horizontalScrollPosition:Number;
-		private var verticalScrollPosition:Number;
 		
 		public function TouchSheet(pinchingControl:PinchingControl)
 		{
@@ -45,8 +43,6 @@ package feathers.extensions.utils
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
-			horizontalScrollPosition = pinchingControl.horizontalScrollPosition;
-			verticalScrollPosition = pinchingControl.verticalScrollPosition;
 		}
 		
 		private function onTouch(event:TouchEvent):void
@@ -148,7 +144,7 @@ package feathers.extensions.utils
 				if( isNaN( pinchingControl.maxScale ) )
 				{
 					this.scaleX = this.scaleY = 1;
-					this.addEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
+					//this.addEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
 				}
 				else if( this.scaleX != pinchingControl.maxScale)
 				{
@@ -157,14 +153,14 @@ package feathers.extensions.utils
 				else
 				{
 					this.scaleX = this.scaleY = 1;
-					this.addEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
+					//this.addEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
 				}
 				contentsPt = new Point( currentLocal.x * scaleX, currentLocal.y * scaleY );
 				dispatchEvent( new TouchSheetEvent( TouchSheetEvent.PINCHING ) );
 			}
 		}
 		
-		private function onScroll(event:EnterFrameEvent):void
+		/*private function onScroll(event:EnterFrameEvent):void
 		{
 			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
 			if( pinchingControl.isScrolling )
@@ -174,7 +170,7 @@ package feathers.extensions.utils
 				var verticalScrollPosition:Number = ! pinchingControl.isCentered ? 0 : pinchingControl.maxVerticalScrollPosition / 2;
 				pinchingControl.scrollToPosition( horizontalScrollPosition, verticalScrollPosition, 0 );
 			}
-		}
+		}*/
 		
 		public override function dispose():void
 		{
