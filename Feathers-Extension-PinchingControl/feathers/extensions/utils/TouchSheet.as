@@ -11,7 +11,7 @@ package feathers.extensions.utils
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Sprite;
-	//import starling.events.EnterFrameEvent;
+	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -144,7 +144,7 @@ package feathers.extensions.utils
 				if( isNaN( pinchingControl.maxScale ) )
 				{
 					this.scaleX = this.scaleY = 1;
-					//this.addEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
+					this.addEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
 				}
 				else if( this.scaleX != pinchingControl.maxScale)
 				{
@@ -153,24 +153,27 @@ package feathers.extensions.utils
 				else
 				{
 					this.scaleX = this.scaleY = 1;
-					//this.addEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
+					this.addEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
 				}
 				contentsPt = new Point( currentLocal.x * scaleX, currentLocal.y * scaleY );
 				dispatchEvent( new TouchSheetEvent( TouchSheetEvent.PINCHING ) );
 			}
 		}
 		
-		/*private function onScroll(event:EnterFrameEvent):void
+		private function onScroll(event:EnterFrameEvent):void
 		{
 			this.removeEventListener(EnterFrameEvent.ENTER_FRAME, onScroll);
+			
 			if( pinchingControl.isScrolling )
 			{
+				var horizontalScrollPosition:Number = pinchingControl.horizontalAutoScrollTween ? pinchingControl.horizontalAutoScrollTween.getEndValue("horizontalScrollPosition") : pinchingControl.horizontalScrollPosition;
+				var verticalScrollPosition:Number = pinchingControl.verticalAutoScrollTween ? pinchingControl.verticalAutoScrollTween.getEndValue("verticalScrollPosition") : pinchingControl.verticalScrollPosition;
 				pinchingControl.stopScrolling();
-				var horizontalScrollPosition:Number = ! pinchingControl.isCentered ? 0 : pinchingControl.maxHorizontalScrollPosition / 2;
-				var verticalScrollPosition:Number = ! pinchingControl.isCentered ? 0 : pinchingControl.maxVerticalScrollPosition / 2;
+				/*var horizontalScrollPosition:Number = ! pinchingControl.isCentered ? 0 : pinchingControl.maxHorizontalScrollPosition / 2;
+				var verticalScrollPosition:Number = ! pinchingControl.isCentered ? 0 : pinchingControl.maxVerticalScrollPosition / 2;*/
 				pinchingControl.scrollToPosition( horizontalScrollPosition, verticalScrollPosition, 0 );
 			}
-		}*/
+		}
 		
 		public override function dispose():void
 		{

@@ -21,8 +21,9 @@ package feathers.extensions.zoomable
 	import starling.display.DisplayObjectContainer;
 	import starling.events.Event;
 	import starling.display.Sprite;
+	import starling.animation.Tween;
+		
 	import flash.geom.Point;
-	
 	import flash.geom.Rectangle;
 	
 	/**
@@ -409,6 +410,22 @@ package feathers.extensions.zoomable
 		{
 			super.draw();
 			if( this.isInvalid(INVALIDATION_FLAG_SIZE) ) this._autoSizeIfNeeded();
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get horizontalAutoScrollTween():Tween
+		{
+			return this._horizontalAutoScrollTween;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get verticalAutoScrollTween():Tween
+		{
+			return this._verticalAutoScrollTween;
 		}
 		
 		/**
