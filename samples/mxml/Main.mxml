@@ -25,7 +25,7 @@
 			}
 		]]>
 	</fx:Script>
-	<components:PinchingControl id="pinchingControl" scroller="{scrollContainer}" isCentered="true" width="250" height="250">
+	<components:PinchingControl id="pinchingControl" isCentered="true" width="250" height="250">
 		<components:layout>
 			<f:VerticalLayout/>
 		</components:layout>
